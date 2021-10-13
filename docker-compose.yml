@@ -1,0 +1,56 @@
+version: '3.7'
+
+services:
+
+  react:
+    build:
+      context: react-chat
+      dockerfile: Dockerfile
+    container_name: react-chat
+    volumes:
+      - react-chat:/usr/src/react-chat
+    ports:
+      - 3000:3000
+    depends_on:
+      - strapi
+
+
+  strapi:
+    build:
+      context: strapi
+      dockerfile: Dockerfile
+    container_name: strapi
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_NAME: postgres
+      DATABASE_HOST: pgdb
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: spy
+      DATABASE_PASSWORD: ${PWD_DB}
+    volumes:
+      - ./strapi:/srv/app
+    ports:
+      - 1337:1337
+    depends_on:
+      - pgdb
+
+  pgdb:
+    restart: always
+    build:
+      context: ./pgdb
+      dockerfile: Dockerfile-PostgreSQL
+    container_name: pgdb
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: spy
+      POSTGRES_PASSWORD: ${PWD_DB}
+    ports:
+      - 10011:5432
+
+volumes:
+  react-chat:
+
+networks:
+  default:
+    external:
+      name: $NETWORK

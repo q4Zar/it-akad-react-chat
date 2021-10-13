@@ -1,0 +1,5 @@
+from postgres:alpine
+
+COPY db /db
+WORKDIR /db
+RUN ip addr

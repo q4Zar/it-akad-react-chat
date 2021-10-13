@@ -1,0 +1,3 @@
+[submodule "gatsby/spyIntra-gatsby-gql"]
+	path = gatsby/spyIntra-gatsby-gql
+	url = git@gitlab.com:lescommis/envs/prod/programs/v2/webapps/spyIntra-gatsby-gql.git
